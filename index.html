@@ -8,140 +8,153 @@
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
+*{box-sizing:border-box}
+:root{--cursor-color:#ff5fa2}
+
 body{
-  font-family: 'Caveat', cursive;
-  background: radial-gradient(circle at top, #fff5f9, #ffe3ee, #ffd6e8);
-  color: #5a2a3c;
-  overflow-x: hidden;
+  margin:0;
+  font-family:'Caveat',cursive;
+  background:radial-gradient(circle at top,#ffd6e8,#ffeef6);
+  overflow-x:hidden;
+  color:#5a2a3c;
 }
 
-h1{
-  text-align: center;
-  margin: 10px 0;
-  color: #7a2e4a;
-  text-shadow: 0 2px 8px rgba(255,140,170,0.25);
-}
+body.day21{--cursor-color:#d4af37}
+
+h1,h2{text-align:center;padding:20px}
 
 .grid{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  padding: 22px;
+  display:grid;
+  gap:22px;
+  padding:26px;
+  grid-template-columns:repeat(2,1fr);
+  z-index:2;
 }
 
-@media(max-width:768px){
+@media(min-width:900px){
   .grid{
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns:repeat(3,1fr);
+    max-width:1400px;
+    margin:auto;
   }
 }
 
-.card{
-  perspective: 1200px;
-}
+.card{perspective:1400px}
 
 .inner{
-  position: relative;
-  width: 100%;
-  aspect-ratio: 3/4;
-  transform-style: preserve-3d;
-  transition: transform 0.9s cubic-bezier(.4,.2,.2,1);
+  position:relative;
+  width:100%;
+  aspect-ratio:3/4.4;
+  transform-style:preserve-3d;
+  transition:transform .9s cubic-bezier(.4,.2,.2,1);
 }
 
-.card.flip .inner{
-  transform: rotateY(180deg);
-}
+.card.flip .inner{transform:rotateY(180deg)}
 
-.front, .back{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 22px;
-  overflow: hidden;
-  backface-visibility: hidden;
-  box-shadow: 0 10px 25px rgba(255,130,170,0.25);
+.front,.back{
+  position:absolute;
+  inset:0;
+  border-radius:26px;
+  overflow:hidden;
+  backface-visibility:hidden;
 }
 
 .front img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
 .back{
-  background: linear-gradient(145deg, #ffe8f1, #ffd1e3);
-  transform: rotateY(180deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  text-align: center;
-}
-
-.back p{
-  font-size: clamp(17px, 4.6vw, 24px);
-  line-height: 1.45;
-  color: #6b2c44;
-}
-
-.finale .back{
-  background: radial-gradient(circle, #ff9dbd, #ff6f9f, #7a1f3d);
-  color: #fff;
+  background:#fff0f6;
+  transform:rotateY(180deg);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  text-align:center;
+  line-height:1.5;
+  font-size:24px;
 }
 
 .typing::after{
-  content: '♡';
-  animation: blink 1s infinite;
+  content:'💖';
+  margin-left:6px;
+  animation:blink 1s infinite;
+  color:var(--cursor-color);
 }
 
-@keyframes blink{
-  50%{opacity:0;}
+@keyframes blink{50%{opacity:0}}
+
+.locked{
+  filter:blur(22px) brightness(.25);
+  pointer-events:none;
+}
+
+.lock{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:2.4rem;
+}
+
+.today{animation:pulse 2.6s infinite}
+@keyframes pulse{
+  50%{transform:scale(1.05)}
+}
+
+.finale{
+  box-shadow:0 0 45px rgba(255,105,180,.9);
+  animation:heartbeat 1.8s infinite;
+}
+@keyframes heartbeat{
+  20%{transform:scale(1.05)}
+  60%{transform:scale(1.08)}
 }
 
 .heart-shower{
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.heart,
-.heart::before,
-.heart::after{
-  background: #ff8fb4;
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
 }
 
 .heart{
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  transform: rotate(45deg);
-  opacity: 0.45;
-  animation: float 14s linear infinite;
+  position:absolute;
+  width:18px;
+  height:18px;
+  background:#ff5fa2;
+  transform:rotate(45deg);
+  opacity:.35;
+  animation:fall linear infinite;
 }
 
-.heart::before,
-.heart::after{
+.heart::before,.heart::after{
   content:'';
   position:absolute;
-  width:14px;
-  height:14px;
+  width:18px;
+  height:18px;
+  background:#ff5fa2;
   border-radius:50%;
 }
+.heart::before{top:-9px}
+.heart::after{left:-9px}
 
-.heart::before{ top:-7px; }
-.heart::after{ left:-7px; }
-
-@keyframes float{
-  from{ transform: translateY(100vh) rotate(45deg); }
-  to{ transform: translateY(-15vh) rotate(45deg); }
+@keyframes fall{
+  from{transform:translate(calc(-20vw + 140vw * var(--x)),-20vh) rotate(45deg)}
+  to{transform:translate(calc(-20vw + 140vw * var(--x)),130vh) rotate(45deg)}
 }
 </style>
 </head>
 
 <body>
 
+<div class="heart-shower"></div>
+
 <h1>💝 HAPPY BIRTHDAY MI AMOR 💝</h1>
-<h1>❤️ 21 Days · 21 Memories ❤️</h1>
+<h2>❤️ 21 Days · 21 Memories ❤️</h2>
 
 <div class="grid"></div>
 
@@ -150,30 +163,30 @@ const today = 21; // ALL DAYS UNLOCKED
 const grid = document.querySelector('.grid');
 
 const messages = [
-"Day 1 💕 This moment carries quiet elegance and undeniable strength. Every still glance feels intentional, like confidence shaped through time. It’s beauty that never asks to be seen, yet leaves a permanent impression simply by existing.",
-"Day 2 💖 This kiss feels honest and unguarded, like truth spoken without words. No hesitation, no noise—just closeness chosen freely. Love doesn’t need perfection, only courage, presence, and the willingness to feel deeply.",
-"Day 3 💞 Even through distance, this smile reaches straight into my chest. Warmth travels miles effortlessly, proving love isn’t limited by space, but strengthened when two hearts recognize each other again and again.",
-"Day 4 ❤️ There’s comfort in this stillness, intimacy built on silence rather than words. It feels like belonging without explanation, where love settles into everyday moments and turns them into something deeply personal.",
-"Day 5 💓 Snow surrounds us, yet nothing feels cold here. Love becomes warmth, standing steady against the elements, turning winter into memory and proving togetherness can outshine any storm.",
-"Day 6 💘 This touch feels instinctive and protective, reassurance wrapped in gentleness. Love speaks loudest through presence, patience, and quiet devotion that never needs explanation.",
-"Day 7 💝 Hope glows softly here, mixed with trust and anticipation. Love looks forward instead of back, choosing faith even when the future remains unwritten.",
-"Day 8 💗 This closeness burns with intensity—desire colliding with emotional depth. Raw, magnetic, fearless love that isn’t restrained, but unapologetic in how deeply it wants to be felt.",
-"Day 9 💞 Candles flicker as wishes rise quietly. Love pauses to acknowledge growth, memories, and the miracle of being alive together in this exact moment.",
-"Day 10 ❤️ This closeness feels sacred. Vulnerability lives here, unhidden and unashamed, where the world fades and only trust, breath, and connection remain.",
-"Day 11 💓 Confidence shaped by grace and identity. Beauty deepens when it carries strength, history, and the quiet pride of knowing who you are.",
-"Day 12 💘 This kiss feels slower and intentional—love choosing patience over urgency. Deep affection doesn’t rush; it stays, lingers, and settles gently.",
-"Day 13 💝 This smile holds warmth and mischief together. Love isn’t only intensity—it’s laughter, ease, and joy in moments that don’t try too hard.",
-"Day 14 💗 Peace lives in this quiet focus. Love doesn’t demand attention—it remains steady, present, and deeply reassuring in the background.",
-"Day 15 💞 Snow falls again, but love stands unshaken. When hearts align, even the coldest surroundings soften into something unforgettable.",
-"Day 16 ❤️ This touch whispers safety and devotion. Real love doesn’t announce itself—it simply stays and holds you when needed.",
-"Day 17 💓 Innocence and hope glow softly here. Love rewards patience, trusting what’s meant will always find its way.",
-"Day 18 💘 Intensity surges—emotion and desire merge without restraint. Love fully present, fearless, and undeniably real.",
-"Day 19 💝 Lights glow, candles burn. Happiness isn’t loud—it’s felt most deeply in quiet reflection.",
-"Day 20 💗 This closeness feels infinite. Two souls choosing each other fully, knowing love this certain is never accidental.",
-"Day 21 ❤️ Everything converges here—desire, devotion, surrender. Those eyes hold inevitability. If the world ended now, I’d still know this love was worth everything."
+"Day 1 💕 This moment carries quiet elegance and undeniable strength. Beauty that doesn’t ask to be seen, yet leaves a lasting impression simply by existing.",
+"Day 2 💖 This kiss feels honest and unguarded, like truth spoken without words. Love doesn’t need perfection, only presence and courage.",
+"Day 3 💞 Even through distance, this smile reaches straight into my chest. Love isn’t limited by space when hearts recognize each other.",
+"Day 4 ❤️ Stillness becomes intimacy here. Love settles into ordinary moments and turns them deeply personal.",
+"Day 5 💓 Snow surrounds us, yet love becomes warmth, standing steady against every storm.",
+"Day 6 💘 This touch speaks devotion without explanation—gentle, protective, and constant.",
+"Day 7 💝 Hope glows softly. Love chooses faith even when tomorrow remains unwritten.",
+"Day 8 💗 Intensity meets desire. Love burns unapologetically deep and fearless.",
+"Day 9 💞 Candles flicker as wishes rise. Love pauses to appreciate shared moments.",
+"Day 10 ❤️ Vulnerability lives here, unhidden. The world fades, leaving only connection.",
+"Day 11 💓 Confidence shaped by grace. Beauty deepens with identity.",
+"Day 12 💘 Love slows down, choosing patience over urgency.",
+"Day 13 💝 Love smiles through laughter and ease.",
+"Day 14 💗 Silence feels safe when love is present.",
+"Day 15 💞 Even winter softens when hearts align.",
+"Day 16 ❤️ Devotion stays without needing words.",
+"Day 17 💓 Hope believes what’s meant will find its way.",
+"Day 18 💘 Love without restraint, fully felt.",
+"Day 19 💝 Happiness whispers quietly.",
+"Day 20 💗 Two souls choosing each other endlessly.",
+"Day 21 ❤️ Everything converges here—love undeniable, eternal, and worth everything."
 ];
 
-function typeText(el, text){
+function typeText(el,text){
   el.textContent='';
   el.classList.add('typing');
   let i=0;
@@ -190,10 +203,11 @@ for(let i=1;i<=21;i++){
   const card=document.createElement('div');
   card.className='card'+(i===21?' finale':'');
   card.innerHTML=`
-  <div class="inner">
-    <div class="front"><img src="day${i}.jpg"></div>
-    <div class="back"><p></p></div>
-  </div>`;
+    <div class="inner">
+      <div class="front"><img src="day${i}.jpg"></div>
+      <div class="back"><p></p></div>
+    </div>
+  `;
   card.onclick=()=>{
     card.classList.toggle('flip');
     const p=card.querySelector('p');
@@ -202,17 +216,15 @@ for(let i=1;i<=21;i++){
   grid.appendChild(card);
 }
 
-const shower=document.createElement('div');
-shower.className='heart-shower';
-for(let i=0;i<40;i++){
-  const h=document.createElement('span');
+const box=document.querySelector('.heart-shower');
+for(let i=0;i<60;i++){
+  const h=document.createElement('div');
   h.className='heart';
-  h.style.left=Math.random()*100+'vw';
-  h.style.animationDuration=8+Math.random()*6+'s';
+  h.style.setProperty('--x',Math.random());
+  h.style.animationDuration=10+Math.random()*10+'s';
   h.style.animationDelay=Math.random()*5+'s';
-  shower.appendChild(h);
+  box.appendChild(h);
 }
-document.body.appendChild(shower);
 </script>
 
 </body>
